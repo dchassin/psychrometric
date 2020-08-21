@@ -13,17 +13,6 @@ References:
 
 * Magnus, G., 1844: Versuche über die Spannkräfte des Wasserdampfs. Ann. Phys. Chem., 61, 225–247.
 
-Examples:
->>> import psychrometric as pm
->>> pm.Temperature(value=20,unit="C")
-293.16
->>> pm.Temperature(20,"C").F()
-68.0
->>> pm.Temperature(100,"C").F()
-212.0
->>> pm.Temperature(100,"F").humidity(dewpoint=pm.Temperature(70,"F"))
-38.19555954648607
-
 """
 
 from math import *
@@ -32,15 +21,20 @@ class Temperature(float):
 
     """Temperature class that implements conversion between temperature units"""
 
-    def __new__(cls,value,unit="K",noexception=False):
+    def __new__(cls,value=0.0,unit="K",noexception=False,dewpoint=None,humidity=None):
 
         """Define a temperature value with associated units
 
         Parameters:
           * value (float): temperature value
           * unit (str): temperature unit, i.e., 'K' (default),'C','F', or 'R'
+          * noexception (bool): disable exceptions (return None on error)
+          * dewpoint (Temperature): dewpoint temperature (required humidity, ignores value)
+          * humidity (%): relative humidity (required dewpoint, ignores value)
         """
-        if unit == "K":
+        if dewpoint or humidity:
+            return float.__new__(cls,temperature(dewpoint=dewpoint.C(),humidity=humidity)+273.16)
+        elif unit == "K":
             return float.__new__(cls,value)
         elif unit == "C":
             return float.__new__(cls,value+273.16)
@@ -53,16 +47,26 @@ class Temperature(float):
         else:
             raise Exception(f"psychrometric.Temperature(value={value},unit='{unit}'): unit '{unit}' is not valid")
 
-    def __add__(self,T):
-        """Add temperatures"""
-        return Temperature(float(self)+float(T),"K")
+    def __repr__(self):
+        """Evaluatable object representation of a temperature"""
+        return f"{self.__module__}.{self.__class__.__name__}(value={float(self)},unit='K')"
 
-    def __sub__(self,T):
+    def __str__(self):
+        """String representation of a temperature"""
+        return f"{float(self)} degK"
+
+    def __add__(self,temperature):
+        """Add temperatures"""
+        return Temperature(float(self)+float(temperature),"K")
+
+    def __sub__(self,temperature):
         """Subtract temperatures"""
-        return Temperature(float(self)-float(T),"K")
+        return Temperature(float(self)-float(temperature),"K")
 
     def __mul__(self,a):
         """Multiple temperature by a scalar"""
+        if type(a) == Temperature:
+            raise Exception("temperature product not supported")
         return Temperature(float(self)*a,"K")
 
     def __truediv__(self,a):
@@ -112,17 +116,17 @@ class Temperature(float):
         """
         return Temperature(dewpoint(self.C(),humidity),"C")
 
-def temperature(RH,DP):
+def temperature(humidity,dewpoint,unit=None):
     """Calculate temperative given relative humidity and dewpoint temperature (all temperature in Celcius)"""
-    return 243.04*(((17.625*DP)/(243.04+DP))-log(RH/100))/(17.625+log(RH/100)-((17.625*DP)/(243.04+DP)))
+    return 243.04*(((17.625*dewpoint)/(243.04+dewpoint))-log(humidity/100))/(17.625+log(humidity/100)-((17.625*dewpoint)/(243.04+dewpoint)))
 
-def humidity(T,DP):
+def humidity(temperature,dewpoint):
     """Calculate relative humidity given temperative and dewpoint temperature (all temperature in Celcius)"""
-    return 100*(exp((17.625*DP)/(243.04+DP))/exp((17.625*T)/(243.04+T)))
+    return 100*(exp((17.625*dewpoint)/(243.04+dewpoint))/exp((17.625*temperature)/(243.04+temperature)))
 
-def dewpoint(T,RH):
+def dewpoint(temperature,humidity):
     """Calculate dewpoint temperature given relative humidity and temperative (all temperature in Celcius)"""
-    return 243.04*(log(RH/100)+((17.625*T)/(243.04+T)))/(17.625-log(RH/100)-((17.625*T)/(243.04+T)))
+    return 243.04*(log(humidity/100)+((17.625*temperature)/(243.04+temperature)))/(17.625-log(humidity/100)-((17.625*temperature)/(243.04+temperature)))
 
 import unittest
 
@@ -141,26 +145,31 @@ class TestTemperature(unittest.TestCase):
         self.assertEqual((Temperature(100,"K")/2),Temperature(50,"K"))
         self.assertEqual((Temperature(100,"K")/Temperature(50,"K")),2)
 
+    def test_Celcius(self):
         self.assertEqual(Temperature(20,"C").C(),20)
         self.assertEqual(Temperature(10,"C").C(),10)
         self.assertEqual(Temperature(0,"C").K(),273.16)
         self.assertEqual(Temperature(100,"C").K(),373.16)
+
+    def test_Fahrenheit(self):
         self.assertEqual(Temperature(32,"F").K(),273.16)
         self.assertEqual(Temperature(212,"F").K(),373.16)
         self.assertEqual(Temperature(0,"J",True),None)
+
+    def test_Psychrometrics(self):
         self.assertLess(abs(Temperature(20,"C").humidity(Temperature(10,"C"))-52.54),0.01)
         self.assertLess(abs(Temperature(20,"C").dewpoint(52.54).C()-Temperature(10,"C").C()),0.01)
 
 class TestPsychrometric(unittest.TestCase):
 
     def test_temperature(self):
-        self.assertLess(abs(temperature(70.0,20.0)-25.89),0.01)
+        self.assertLess(abs(temperature(humidity=70.0,dewpoint=20.0)-25.89),0.01)
 
     def test_humidity(self):
-        self.assertLess(abs(humidity(20.0,10.0)-52.54),0.01)
+        self.assertLess(abs(humidity(temperature=20.0,dewpoint=10.0)-52.54),0.01)
 
     def test_dewpoint(self):
-        self.assertLess(abs(temperature(70.0,10.0)-15.45),0.01)
+        self.assertLess(abs(temperature(humidity=70.0,dewpoint=10.0)-15.45),0.01)
 
 if __name__ == '__main__':
     unittest.main()
