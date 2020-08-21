@@ -1,0 +1,23 @@
+A psychrometric chart is a graph of the thermodynamic parameters of moist air at a constant pressure, often equated to an elevation relative to sea level. The ASHRAE-style psychrometric chart, shown here, was pioneered by Willis Carrier in 1904.[8] It depicts these parameters and is thus a graphical equation of state. 
+
+The psychrometric chart allows all the parameters of some moist air to be determined from any three independent parameters, one of which must be the pressure. Changes in state, such as when two air streams mix, can be modeled easily and somewhat graphically using the correct psychrometric chart for the location's air pressure or elevation relative to sea level. For locations at not more than 2000 ft (600 m) of altitude it is common practice to use the sea-level psychrometric chart.
+
+[image:PsychrometricChart.png]
+
+The psychrometric chart parameters are:
+
+- *Dry-bulb temperature (DBT)* is that of an air sample, as determined by an ordinary thermometer. It is typically plotted as the abscissa (horizontal axis) of the graph. The SI units for temperature are kelvins or degrees Celsius; other units are degrees Fahrenheit and degrees Rankine.
+
+- *Wet-bulb temperature (WBT)* is that of an air sample after it has passed through a constant-pressure, ideal, adiabatic saturation process, that is, after the air has passed over a large surface of liquid water in an insulated channel. In practice this is the reading of a thermometer whose sensing bulb is covered with a wet sock evaporating into a rapid stream of the sample air (see Hygrometer). When the air sample is pre-saturated with water, the WBT will read the same as the DBT. The slope of the line of constant WBT reflects the heat of vaporization of the water required to saturate the air of a given relative humidity.
+
+- *Dew point temperature (DPT)* is the temperature at which a moist air sample at the same pressure would reach water vapor "saturation." At this point further removal of heat would result in water vapor condensing into liquid water fog or, if below freezing point, solid hoarfrost. The dew point temperature is measured easily and provides useful information, but is normally not considered an independent property of the air sample as it duplicates information available via other humidity properties and the saturation curve.
+
+- *Relative humidity (RH)* is the ratio of the mole fraction of water vapor to the mole fraction of saturated moist air at the same temperature and pressure. RH is dimensionless, and is usually expressed as a percentage. Lines of constant RH reflect the physics of air and water: they are determined via experimental measurement. The concept that air "holds" moisture, or that moisture "dissolves" in dry air and saturates the solution at some proportion, is erroneous (albeit widespread); see relative humidity for further details.
+
+- *Humidity ratio* is the proportion of mass of water vapor per unit mass of dry air at the given conditions (DBT, WBT, DPT, RH, etc.). It is also known as the moisture content or mixing ratio. It is typically plotted as the ordinate (vertical axis) of the graph. For a given DBT there will be a particular humidity ratio for which the air sample is at 100% relative humidity: the relationship reflects the physics of water and air and must be determined by measurement. The dimensionless humidity ratio is typically expressed as grams of water per kilogram of dry air, or grains of water per pound of air (7000 grains equal 1 pound).
+
+- *Specific enthalpy*, symbolized by h, is the sum of the internal (heat) energy of the moist air in question, including the heat of the air and water vapor within. Also called heat content per unit mass. In the approximation of ideal gases, lines of constant enthalpy are parallel to lines of constant WBT. Enthalpy is given in (SI) joules per kilogram of air, or BTU per pound of dry air.
+
+- *Specific volume* is the volume of the mixture (dry air plus the water vapor) containing one unit of mass of "dry air". The SI units are cubic meters per kilogram of dry air; other units are cubic feet per pound of dry air. The inverse of specific volume is usually confused as the density of the mixture (see "Applying the Psychrometric Relationships" CIBSE, August 2009). However, to obtain the actual mixture density one must multiply the inverse of the specific volume by unity plus the humidity ratio value at the point of interest (see ASHRAE Fundamentals 1989 6.6, equation 9).
+
+Source: (Wikipedia, Psychrometrics)[https://en.wikipedia.org/wiki/Psychrometrics], (4 August 2020)[https://en.wikipedia.org/w/index.php?title=Psychrometrics&oldid=971165054]
