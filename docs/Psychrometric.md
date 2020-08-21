@@ -1,3 +1,5 @@
+~~~
+/Volumes/DATA/dchassin/Files/GitHub/psychrometric/source
 Help on module psychrometric:
 
 NAME
@@ -681,7 +683,7 @@ CLASSES
      |  skipTest(self, reason)
      |      Skip this test.
      |  
-     |  subTest(self, msg=<object object at 0x101140eb0>, **params)
+     |  subTest(self, msg=<object object at 0x100ef2eb0>, **params)
      |      Return a context manager that will return the enclosed block
      |      of code in a subtest identified by the optional message and
      |      keyword parameters.  A failure in the subtest marks the test
@@ -1113,7 +1115,7 @@ CLASSES
      |  skipTest(self, reason)
      |      Skip this test.
      |  
-     |  subTest(self, msg=<object object at 0x101140eb0>, **params)
+     |  subTest(self, msg=<object object at 0x100ef2eb0>, **params)
      |      Return a context manager that will return the enclosed block
      |      of code in a subtest identified by the optional message and
      |      keyword parameters.  A failure in the subtest marks the test
@@ -1358,3 +1360,4 @@ FILE
     /Volumes/DATA/GitHub/psychrometric/source/psychrometric.py
 
 
+~~~
