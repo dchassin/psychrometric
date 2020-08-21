@@ -1,5 +1,5 @@
 ~~~
-/Volumes/DATA/dchassin/Files/GitHub/psychrometric/source
+/Volumes/DATA/GitHub/psychrometric/source
 Help on module psychrometric:
 
 NAME
@@ -17,17 +17,6 @@ DESCRIPTION
     * August, E. F., 1828: Ueber die Berechnung der Expansivkraft des Wasserdunstes. Ann. Phys. Chem., 13, 122–137. 
     
     * Magnus, G., 1844: Versuche über die Spannkräfte des Wasserdampfs. Ann. Phys. Chem., 61, 225–247.
-    
-    Examples:
-    >>> import psychrometric as pm
-    >>> pm.Temperature(value=20,unit="C")
-    293.16
-    >>> pm.Temperature(20,"C").F()
-    68.0
-    >>> pm.Temperature(100,"C").F()
-    212.0
-    >>> pm.Temperature(100,"F").humidity(dewpoint=pm.Temperature(70,"F"))
-    38.19555954648607
 
 CLASSES
     builtins.float(builtins.object)
@@ -37,7 +26,7 @@ CLASSES
         TestTemperature
     
     class Temperature(builtins.float)
-     |  Temperature(value, unit='K', noexception=False)
+     |  Temperature(value=0.0, unit='K', noexception=False, dewpoint=None, humidity=None)
      |  
      |  Temperature class that implements conversion between temperature units
      |  
@@ -64,13 +53,19 @@ CLASSES
      |      
      |      Important Note: use Rankine scale for all add/subtract Fahrentheit operations.
      |  
-     |  __add__(self, T)
+     |  __add__(self, temperature)
      |      Add temperatures
      |  
      |  __mul__(self, a)
      |      Multiple temperature by a scalar
      |  
-     |  __sub__(self, T)
+     |  __repr__(self)
+     |      Evaluatable object representation of a temperature
+     |  
+     |  __str__(self)
+     |      String representation of a temperature
+     |  
+     |  __sub__(self, temperature)
      |      Subtract temperatures
      |  
      |  __truediv__(self, a)
@@ -93,12 +88,15 @@ CLASSES
      |  ----------------------------------------------------------------------
      |  Static methods defined here:
      |  
-     |  __new__(cls, value, unit='K', noexception=False)
+     |  __new__(cls, value=0.0, unit='K', noexception=False, dewpoint=None, humidity=None)
      |      Define a temperature value with associated units
      |      
      |      Parameters:
      |        * value (float): temperature value
      |        * unit (str): temperature unit, i.e., 'K' (default),'C','F', or 'R'
+     |        * noexception (bool): disable exceptions (return None on error)
+     |        * dewpoint (Temperature): dewpoint temperature (required humidity, ignores value)
+     |        * humidity (%): relative humidity (required dewpoint, ignores value)
      |  
      |  ----------------------------------------------------------------------
      |  Data descriptors defined here:
@@ -177,9 +175,6 @@ CLASSES
      |  __rdivmod__(self, value, /)
      |      Return divmod(value, self).
      |  
-     |  __repr__(self, /)
-     |      Return repr(self).
-     |  
      |  __rfloordiv__(self, value, /)
      |      Return value//self.
      |  
@@ -202,9 +197,6 @@ CLASSES
      |  
      |  __rtruediv__(self, value, /)
      |      Return value/self.
-     |  
-     |  __str__(self, /)
-     |      Return str(self).
      |  
      |  __trunc__(self, /)
      |      Return the Integral closest to x between 0 and x.
@@ -683,7 +675,7 @@ CLASSES
      |  skipTest(self, reason)
      |      Skip this test.
      |  
-     |  subTest(self, msg=<object object at 0x100ef2eb0>, **params)
+     |  subTest(self, msg=<object object at 0x10653deb0>, **params)
      |      Return a context manager that will return the enclosed block
      |      of code in a subtest identified by the optional message and
      |      keyword parameters.  A failure in the subtest marks the test
@@ -762,7 +754,13 @@ CLASSES
      |  
      |  Methods defined here:
      |  
+     |  test_Celcius(self)
+     |  
+     |  test_Fahrenheit(self)
+     |  
      |  test_Kelvin(self)
+     |  
+     |  test_Psychrometrics(self)
      |  
      |  ----------------------------------------------------------------------
      |  Methods inherited from unittest.case.TestCase:
@@ -1115,7 +1113,7 @@ CLASSES
      |  skipTest(self, reason)
      |      Skip this test.
      |  
-     |  subTest(self, msg=<object object at 0x100ef2eb0>, **params)
+     |  subTest(self, msg=<object object at 0x10653deb0>, **params)
      |      Return a context manager that will return the enclosed block
      |      of code in a subtest identified by the optional message and
      |      keyword parameters.  A failure in the subtest marks the test
@@ -1154,142 +1152,14 @@ CLASSES
      |  maxDiff = 640
 
 FUNCTIONS
-    acos(x, /)
-        Return the arc cosine (measured in radians) of x.
-    
-    acosh(x, /)
-        Return the inverse hyperbolic cosine of x.
-    
-    asin(x, /)
-        Return the arc sine (measured in radians) of x.
-    
-    asinh(x, /)
-        Return the inverse hyperbolic sine of x.
-    
-    atan(x, /)
-        Return the arc tangent (measured in radians) of x.
-    
-    atan2(y, x, /)
-        Return the arc tangent (measured in radians) of y/x.
-        
-        Unlike atan(y/x), the signs of both x and y are considered.
-    
-    atanh(x, /)
-        Return the inverse hyperbolic tangent of x.
-    
-    ceil(x, /)
-        Return the ceiling of x as an Integral.
-        
-        This is the smallest integer >= x.
-    
-    copysign(x, y, /)
-        Return a float with the magnitude (absolute value) of x but the sign of y.
-        
-        On platforms that support signed zeros, copysign(1.0, -0.0)
-        returns -1.0.
-    
-    cos(x, /)
-        Return the cosine of x (measured in radians).
-    
-    cosh(x, /)
-        Return the hyperbolic cosine of x.
-    
-    degrees(x, /)
-        Convert angle x from radians to degrees.
-    
-    dewpoint(T, RH)
+    dewpoint(temperature, humidity)
         Calculate dewpoint temperature given relative humidity and temperative (all temperature in Celcius)
-    
-    erf(x, /)
-        Error function at x.
-    
-    erfc(x, /)
-        Complementary error function at x.
     
     exp(x, /)
         Return e raised to the power of x.
     
-    expm1(x, /)
-        Return exp(x)-1.
-        
-        This function avoids the loss of precision involved in the direct evaluation of exp(x)-1 for small x.
-    
-    fabs(x, /)
-        Return the absolute value of the float x.
-    
-    factorial(x, /)
-        Find x!.
-        
-        Raise a ValueError if x is negative or non-integral.
-    
-    floor(x, /)
-        Return the floor of x as an Integral.
-        
-        This is the largest integer <= x.
-    
-    fmod(x, y, /)
-        Return fmod(x, y), according to platform C.
-        
-        x % y may differ.
-    
-    frexp(x, /)
-        Return the mantissa and exponent of x, as pair (m, e).
-        
-        m is a float and e is an int, such that x = m * 2.**e.
-        If x is 0, m and e are both 0.  Else 0.5 <= abs(m) < 1.0.
-    
-    fsum(seq, /)
-        Return an accurate floating point sum of values in the iterable seq.
-        
-        Assumes IEEE-754 floating point arithmetic.
-    
-    gamma(x, /)
-        Gamma function at x.
-    
-    gcd(x, y, /)
-        greatest common divisor of x and y
-    
-    humidity(T, DP)
+    humidity(temperature, dewpoint)
         Calculate relative humidity given temperative and dewpoint temperature (all temperature in Celcius)
-    
-    hypot(x, y, /)
-        Return the Euclidean distance, sqrt(x*x + y*y).
-    
-    isclose(a, b, *, rel_tol=1e-09, abs_tol=0.0)
-        Determine whether two floating point numbers are close in value.
-        
-          rel_tol
-            maximum difference for being considered "close", relative to the
-            magnitude of the input values
-          abs_tol
-            maximum difference for being considered "close", regardless of the
-            magnitude of the input values
-        
-        Return True if a is close in value to b, and False otherwise.
-        
-        For the values to be considered close, the difference between them
-        must be smaller than at least one of the tolerances.
-        
-        -inf, inf and NaN behave similarly to the IEEE 754 Standard.  That
-        is, NaN is not close to anything, even itself.  inf and -inf are
-        only close to themselves.
-    
-    isfinite(x, /)
-        Return True if x is neither an infinity nor a NaN, and False otherwise.
-    
-    isinf(x, /)
-        Return True if x is a positive or negative infinity, and False otherwise.
-    
-    isnan(x, /)
-        Return True if x is a NaN (not a number), and False otherwise.
-    
-    ldexp(x, i, /)
-        Return x * (2**i).
-        
-        This is essentially the inverse of frexp().
-    
-    lgamma(x, /)
-        Natural logarithm of absolute value of Gamma function at x.
     
     log(...)
         log(x, [base=math.e])
@@ -1297,64 +1167,19 @@ FUNCTIONS
         
         If the base not specified, returns the natural logarithm (base e) of x.
     
-    log10(x, /)
-        Return the base 10 logarithm of x.
-    
-    log1p(x, /)
-        Return the natural logarithm of 1+x (base e).
-        
-        The result is computed in a way which is accurate for x near zero.
-    
-    log2(x, /)
-        Return the base 2 logarithm of x.
-    
-    modf(x, /)
-        Return the fractional and integer parts of x.
-        
-        Both results carry the sign of x and are floats.
-    
-    pow(x, y, /)
-        Return x**y (x to the power of y).
-    
-    radians(x, /)
-        Convert angle x from degrees to radians.
-    
-    remainder(x, y, /)
-        Difference between x and the closest integer multiple of y.
-        
-        Return x - n*y where n*y is the closest integer multiple of y.
-        In the case where x is exactly halfway between two multiples of
-        y, the nearest even value of n is used. The result is always exact.
-    
-    sin(x, /)
-        Return the sine of x (measured in radians).
-    
-    sinh(x, /)
-        Return the hyperbolic sine of x.
-    
-    sqrt(x, /)
-        Return the square root of x.
-    
-    tan(x, /)
-        Return the tangent of x (measured in radians).
-    
-    tanh(x, /)
-        Return the hyperbolic tangent of x.
-    
-    temperature(RH, DP)
+    temperature(humidity, dewpoint, unit=None)
         Calculate temperative given relative humidity and dewpoint temperature (all temperature in Celcius)
-    
-    trunc(x, /)
-        Truncates the Real x to the nearest Integral toward 0.
-        
-        Uses the __trunc__ magic method.
 
 DATA
-    e = 2.718281828459045
-    inf = inf
-    nan = nan
-    pi = 3.141592653589793
-    tau = 6.283185307179586
+    __authoremail__ = 'dchassin@slac.stanford.edu'
+    __authorname__ = 'David P. Chassin'
+    __copyright__ = '2020 Regents of the Leland Stanford Junior University...
+    __description__ = 'Psychrometric calculation library'
+    __license__ = 'GPL3.0'
+    __url__ = 'https://github.com/dchassin/psychrometric'
+
+VERSION
+    0.0.1
 
 FILE
     /Volumes/DATA/GitHub/psychrometric/source/psychrometric.py

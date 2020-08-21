@@ -100,7 +100,7 @@ In addition, the `Temperature` class support the same conversions, e.g.,
 48.66999193496164
 ~~~
 
-Note that you cannot directly create a `Temperature` from a humidity and dewpoint. You must use the `Temperature` constructor, e.g.,
+You can create a `Temperature` from a humidity and dewpoint using the `Temperature` constructor, e.g.,
 
 ~~~
 >>> Temperature(dewpoint=Temperature(70,"F"),humidity=70).F()

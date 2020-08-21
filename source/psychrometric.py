@@ -15,7 +15,15 @@ References:
 
 """
 
-from math import *
+__version__ = "0.0.1"
+__authorname__ = "David P. Chassin"
+__authoremail__  = "dchassin@slac.stanford.edu"
+__copyright__ = "2020 Regents of the Leland Stanford Junior University"
+__license__ = "GPL3.0"
+__description__ = "Psychrometric calculation library"
+__url__ = "https://github.com/dchassin/psychrometric"
+
+from math import log, exp
 
 class Temperature(float):
 
